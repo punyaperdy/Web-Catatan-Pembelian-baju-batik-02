@@ -1,0 +1,172 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Catatan Pembelian Produk Batik</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            margin: 20px;
+            background: #f7f7f7;
+        }
+        h2 {
+            text-align: center;
+        }
+        .container {
+            max-width: 700px;
+            margin: auto;
+            background: #fff;
+            padding: 20px;
+            border-radius: 10px;
+            box-shadow: 0 0 10px rgba(0,0,0,0.1);
+        }
+        input, button {
+            padding: 10px;
+            margin: 5px 0;
+            width: 100%;
+            font-size: 14px;
+        }
+        table {
+            width: 100%;
+            border-collapse: collapse;
+            margin-top: 20px;
+        }
+        table, th, td {
+            border: 1px solid #ccc;
+        }
+        th, td {
+            padding: 10px;
+            text-align: center;
+        }
+        .btn-delete {
+            background: red;
+            color: #fff;
+            border: none;
+            padding: 5px 10px;
+            cursor: pointer;
+            border-radius: 5px;
+        }
+    </style>
+</head>
+<body>
+    <nav style="background:#333; padding:10px; text-align:center; border-radius:5px; margin-bottom:20px;">
+        <a href="#formPembelian" style="color:white; margin:0 15px; font-size:18px; text-decoration:none;">Tambah Pembelian</a>
+        <a href="#riwayatBox" onclick="toggleRiwayat()" style="color:white; margin:0 15px; font-size:18px; text-decoration:none;">Riwayat Pembelian</a>
+    </nav>
+    <div class="container" id="formPembelian">
+        <script>
+        let dataPembelian = [];
+
+        function tambahData() {
+            let tanggal = document.getElementById('tanggal').value;
+            let produk = document.getElementById('produk').value;
+            let jenis = document.getElementById('jenis').value;
+            let kategori = document.getElementById('kategori').value;
+            let banyak = document.getElementById('banyak').value;
+            let harga = document.getElementById('harga').value;
+
+            if (tanggal === '' || produk === '' || jenis === '' || kategori === '' || banyak === '' || harga === '') {
+                alert('Semua input wajib diisi!');
+                return;
+            }
+
+            let total = banyak * harga;
+
+            dataPembelian.push({ tanggal, produk, jenis, kategori, banyak, harga, total });
+            tampilkanData();
+            resetForm();
+        }
+
+        function tampilkanData() {
+            let tabel = document.getElementById('tabelData');
+            tabel.innerHTML = '';
+            let totalKes = 0;
+
+            dataPembelian.forEach((item, index) => {
+                totalKes += item.total;
+                tabel.innerHTML += `
+                    <tr>
+                        <td>${index + 1}</td>
+                        <td>${item.tanggal}</td>
+                        <td>${item.produk}</td>
+                        <td>${item.jenis}</td>
+                        <td>${item.kategori}</td>
+                        <td>${item.banyak}</td>
+                        <td>${item.harga}</td>
+                        <td>${item.total}</td>
+                        <td><button class="btn-delete" onclick="hapusData(${index})">Hapus</button></td>
+                    </tr>
+                `;
+            });
+
+            document.getElementById('totalKeseluruhan').innerText = totalKes;
+        }
+
+        function hapusData(index) {
+            dataPembelian.splice(index, 1);
+            tampilkanData();
+        }
+
+        function resetForm() {
+            document.getElementById('tanggal').value = '';
+            document.getElementById('produk').value = '';
+            document.getElementById('jenis').value = '';
+            document.getElementById('kategori').value = '';
+            document.getElementById('banyak').value = '';
+            document.getElementById('harga').value = '';
+        }();
+        }
+
+        function tampilkanData() {
+            let tabel = document.getElementById('tabelData');
+            tabel.innerHTML = '';
+            let totalKes = 0;
+
+            dataPembelian.forEach((item, index) => {
+                totalKes += item.total;
+                tabel.innerHTML += `
+                    <tr>
+                        <td>${index + 1}</td>
+                        <td>${item.produk}</td>
+                        <td>${item.jumlah}</td>
+                        <td>${item.harga}</td>
+                        <td>${item.total}</td>
+                        <td><button class="btn-delete" onclick="hapusData(${index})">Hapus</button></td>
+                    </tr>
+                `;
+            });
+
+            document.getElementById('totalKeseluruhan').innerText = totalKes;
+        }
+
+        function hapusData(index) {
+            dataPembelian.splice(index, 1);
+            tampilkanData();
+        }
+
+        function resetForm() {
+            document.getElementById('produk').value = '';
+            document.getElementById('jumlah').value = '';
+            document.getElementById('harga').value = '';
+        }
+    
+        // === Tambah Riwayat ===
+        function tambahRiwayat(teks) {
+            let list = document.getElementById('riwayatList');
+            if(!list) return;
+            let li = document.createElement('li');
+            li.textContent = teks;
+            list.appendChild(li);
+        }
+
+        // === Toggle Riwayat ===
+        function toggleRiwayat() {
+            let box = document.getElementById('riwayatBox');
+            if(!box) return;
+            box.style.display = box.style.display === 'none' ? 'block' : 'none';
+        }
+
+</script>
+</body>
+</html>
